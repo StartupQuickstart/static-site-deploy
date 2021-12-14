@@ -9,5 +9,5 @@ export CERTIFICATE_ARN='arn:aws:acm:us-east-1:123456789000:certificate/88888888-
 export BUCKET_NAME='www.example.com'
 export ENV='prod'
 export GITHUB_SECRET='generated-github-secret'
-export GITHUB_PERSON_ACCESS_TOKEN='github-token'
+export GITHUB_PERSONAL_ACCESS_TOKEN='github-token'
 export GITHUB_REPO='https://github.com/{github-account}/{github-repo}.git'
