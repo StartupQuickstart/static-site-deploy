@@ -23,7 +23,7 @@ The name and ARN of the certificate of the ssl certificate you want to use.
 You can setup one [here](https://console.aws.amazon.com/acm/home?region=us-east-1#/certificates/list).
 ```
   export CERTIFICATE_NAME='example.com'
-  export CERTIFICATE_ARN='arn:aws:acm:us-east-1:123456789000:certificate/   88888888-4444-4444-4444-1212121212'
+  export CERTIFICATE_ARN='arn:aws:acm:us-east-1:123456789000:certificate/88888888-4444-4444-4444-1212121212'
 ```
 
 The name of the app, the environemnt (stage, prod, etc.), and the url to deploy the website.
