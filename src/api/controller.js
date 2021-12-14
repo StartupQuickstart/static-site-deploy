@@ -15,7 +15,6 @@ export default class ApiController {
   static async githubWebHook(req, res) {
     try {
       const github = new Github(process.env.GITHUB_KEY);
-      await github.deploy();
 
       const tempDir = '/temp';
       const repoName = process.env.GITHUB_REPO.split('/')
