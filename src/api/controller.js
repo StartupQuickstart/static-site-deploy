@@ -1,7 +1,10 @@
 import shell from 'shelljs';
 import path from 'path';
+import fs from 'fs';
+import mime from 'mime';
 import Github from '../lib/github';
 import { S3 } from 'aws-sdk';
+import { getFiles } from '../lib/files';
 
 const s3 = new S3();
 
@@ -16,12 +19,12 @@ export default class ApiController {
     try {
       const github = new Github(process.env.GITHUB_KEY);
 
-      const tempDir = '/temp';
+      const tempDir = '/tmp';
       const repoName = process.env.GITHUB_REPO.split('/')
         .pop()
         .replace(/\.git$/, '');
 
-      const dir = path.join(tempDir, repoName);
+      const dir = path.join(tempDir, repoName + '-master');
       shell.exec(`rm -rf ${dir}`);
 
       console.log(`Cloning github repository: ${process.env.GITHUB_REPO}`);
@@ -36,7 +39,7 @@ export default class ApiController {
           s3
             .upload({
               Bucket: process.env.BUCKET_NAME,
-              Key: file.replace(`${root}/`, ''),
+              Key: file.replace(`${dir}/`, ''),
               Body: fs.createReadStream(file),
               ContentType: mime.lookup(file),
             })
@@ -53,6 +56,7 @@ export default class ApiController {
         timestamp: Date.now(),
       });
     } catch (err) {
+      console.log(err);
       return res.status(500).send({
         success: false,
         timestamp: Date.now(),

@@ -8,15 +8,6 @@ import morgan from 'morgan';
 import http from 'http';
 import apiRoutes from './api/routes';
 
-import Github from './lib/github';
-import shell from 'shelljs';
-import { getFiles } from './lib/files';
-import { S3 } from 'aws-sdk';
-import fs from 'fs';
-import mime from 'mime-types';
-
-const s3 = new S3();
-
 export default async () => {
   const app = new express();
 

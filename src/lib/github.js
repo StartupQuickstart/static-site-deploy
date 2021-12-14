@@ -14,7 +14,7 @@ export default class Github {
    * @param {String} repo Repository to clone
    * @param {String} targetDir Target Directory to extract repository to
    */
-  clone(repo, targetDir = path.resolve(__dirname, '/tmp')) {
+  clone(repo, targetDir = path.resolve('/tmp')) {
     return new Promise((resolve, reject) => {
       const archiveUrl = repo.replace(/.git$/, '/archive/master.zip');
       return request(archiveUrl, {
