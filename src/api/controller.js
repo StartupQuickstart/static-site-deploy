@@ -47,19 +47,18 @@ export default class ApiController {
             })
         )
       );
+
+      return res.json({
+        success: true,
+        timestamp: Date.now(),
+      });
     } catch (err) {
-      console.error(err.message, err.stack);
       return res.status(500).send({
         success: false,
         timestamp: Date.now(),
         error: err,
       });
     }
-
-    return res.json({
-      success: true,
-      timestamp: Date.now(),
-    });
   }
 
   /**
