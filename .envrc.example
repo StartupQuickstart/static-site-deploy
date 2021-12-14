@@ -1,0 +1,13 @@
+// https://console.aws.amazon.com/iam/home?#/security_credentials
+export AWS_ACCESS_KEY_ID=''
+export AWS_SECRET_ACCESS_KEY=''
+export AWS_REGION='us-east-1'
+export APP='example-app'
+export DOMAIN='www.example.com'
+export CERTIFICATE_NAME='example.com'
+export CERTIFICATE_ARN='arn:aws:acm:us-east-1:123456789000:certificate/88888888-4444-4444-4444-1212121212'
+export BUCKET_NAME='www.example.com'
+export ENV='prod'
+export GITHUB_SECRET='generated-github-secret'
+export GITHUB_TOKEN='github-token'
+export GITHUB_REPO='https://github.com/{github-account}/{github-repo}.git'

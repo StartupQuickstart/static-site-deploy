@@ -1,0 +1,9 @@
+
+{
+  "extends": ["plugin:prettier/recommended", "babel"],
+  "rules": {
+    "require-atomic-updates": 0,
+    "no-async-promise-executor": 0,
+    "comma-dangle": ["error", "never"]
+  }
+}

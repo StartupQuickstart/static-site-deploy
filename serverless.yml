@@ -1,0 +1,114 @@
+service: ${env:APP}-web
+plugins:
+  - serverless-api-cloudfront
+  - serverless-plugin-warmup
+
+custom:
+  customDomains:
+    - rest:
+        domainName: ${env:DOMAIN}
+        certificateName: ${env:CERTIFICATE_NAME}
+        stage: ${self:provider.stage}
+        createRoute53Record: true
+        endpointType: 'regional'
+        autoDomain: true
+  apiCloudFront:
+    domain: ${env:DOMAIN}
+    certificate: ${env:CERTIFICATE_ARN}
+    headers:
+      - 'Content-Type'
+      - 'Authorization'
+    compress: true
+    logging:
+      bucket: ${env:BUCKET_NAME}.s3.amazonaws.com
+      prefix: web
+  warmup:
+    default:
+      enabled: true
+      events:
+        - schedule: rate(3 minutes)
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 256
+  timeout: 30
+  stage: ${opt:stage}
+  region: us-east-1
+  lambdaHashingVersion: 20201221
+  apiGateway:
+    shouldStartNameWithService: true
+    binaryMediaTypes:
+      - image/png
+      - image/jpeg
+      - "*/*"
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'lambda:InvokeFunction'
+          Resource: "*"
+        - Effect: 'Allow'
+          Action:
+            - 's3:*'
+          Resource:
+            - 'arn:aws:s3:::${env:BUCKET_NAME}'
+            - 'arn:aws:s3:::${env:BUCKET_NAME}/*'
+resources:
+  Resources:
+    WebBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: Private
+        BucketName: ${env:BUCKET_NAME}
+
+functions:
+
+  api:
+    warmup:
+      default:
+        enabled: true
+    handler: dist/lambda.universal
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Requested-With
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+      - http:
+          path: /
+          method: get
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Requested-With
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+
+    environment:
+      TZ: UTC
+      NODE_ENV: production
+      ENV: ${env:ENV}
+      HOST: https://${env:DOMAIN}.com
+      APP: ${env:APP}
+      BUCKET_NAME: ${env:BUCKET_NAME}
+      GITHUB_SECRET: ${env:GITHUB_SECRET}
+      GITHUB_TOKEN: ${env:GITHUB_TOKEN}
+      GITHUB_REPO: ${env:GITHUB_REPO}
+
+package:
+  patterns:
+    - '!src/**'
