@@ -1,6 +1,7 @@
 import request from 'request';
 import path from 'path';
 import unzip from 'unzip-stream';
+import crypto from 'crypto';
 
 export default class Github {
   constructor(key) {
